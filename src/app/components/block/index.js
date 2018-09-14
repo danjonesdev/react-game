@@ -1,0 +1,40 @@
+import React, { Component } from "react";
+
+import Default from './default';
+import Enemy from './enemy';
+import MoveMarker from './move-marker';
+import Terrain from './terrain';
+
+class Block extends Component {
+  render() {
+    const { block, decrementRound } = this.props;
+
+    if (block.item.type === 'default') {
+      return (
+        <Default {...this.props} />
+      );
+    }
+
+    if (block.item.type === 'enemy') {
+      return (
+        <Enemy {...this.props} />
+      );
+    }
+
+    if (block.item.type === 'move-marker') {
+      return (
+        <MoveMarker {...this.props} />
+      );
+    }
+
+    if (block.item.type === 'terrain') {
+      return (
+        <Terrain {...this.props} />
+      );
+    }
+
+    return false;
+  }
+}
+
+export default Block;
