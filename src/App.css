@@ -59,9 +59,8 @@
   background: orange;
 }
 
-.grid__block--current {
-  background: orange;
-  outline: 1px solid pink;
+.grid__block--player {
+  background: red;
 }
 
 .grid__block--enemy {
