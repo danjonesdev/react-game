@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { random } from "lodash";
 
 // import logo from "./logo.svg";
 import "../App.css";
@@ -12,10 +13,16 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      grid: genMap(),
-      currentX: 12,
-      currentY: 5,
+      grid: null,
+      currentX: random(1, 19),
+      currentY: random(1, 14),
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      grid: genMap(this.state.currentX, this.state.currentY),
+    });
   }
 
   movePlayer = (direction) => {
@@ -29,24 +36,27 @@ class App extends Component {
   }
 
   render() {
-    const { grid, round } = this.state;
+    const { grid } = this.state;
 
-    return (
-      <div className="App">
-        <p>Round {round}</p>
-        <p>currentX {this.state.currentX}, currentY {this.state.currentY}</p>
+    if (grid) {
+      return (
+        <div className="App">
+          <p>currentX {this.state.currentX}, currentY {this.state.currentY}</p>
 
-        <div className="grid">
-          {grid.map((block, i) => (
-            <Block
-              key={i}
-              block={block}
-              movePlayer={this.movePlayer}
-            />
-          ))}
+          <div className="grid">
+            {grid.map((block, i) => (
+              <Block
+                key={i}
+                block={block}
+                movePlayer={this.movePlayer}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
+
+    return false;
   }
 }
 
