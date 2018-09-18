@@ -1,17 +1,15 @@
 import { sample, random, includes } from "lodash";
 
 export default (currentX, currentY) => {
-
   let gridSize = 300;
   let rowSize = 20;
   let grid = [];
   let x = 1;
   let y = 1;
 
-  let terrainTypes = ["forest", "mountains", "water"];
+  let terrains = ["forest", "mountains", "water"];
   let terrainScale = 3; // 1-10
   let enemyScale = 2; // 1-10
-
 
   const renderXY = () => {
     let i;
@@ -52,12 +50,11 @@ export default (currentX, currentY) => {
     for (i = 0; i < grid.length; i++) {
       const player = {
         currentPos: false,
-        moveMarker: false,
-      }
+        moveMarker: false
+      };
 
-      // const defaultScale = random(0, 10);
-      // const isTerrain = (defaultScale < terrainScale) ? true : false;
-      //
+      const isTerrain = random(0, 10) < terrainScale ? true : false;
+
       // const enemyScale = random(0, 10);
       // const isEnemy = (enemyScale < enemyScale) ? true : false;
 
@@ -69,13 +66,13 @@ export default (currentX, currentY) => {
       //   continue;
       // }
 
-      // // terrain
-      // if (isTerrain) {
-      //   item.type = 'terrain';
-      //   item.terrain = sample(terrainTypes);
-      //   grid[i].item = item;
-      //   continue;
-      // }
+      // terrain
+      if (isTerrain && grid[i].x !== currentX && grid[i].y !== currentY) {
+        grid[i].player = player;
+        grid[i].type = "terrain";
+        grid[i].terrain = sample(terrains);
+        continue;
+      }
       //
       // // enemy
       // if (isEnemy) {
@@ -92,7 +89,6 @@ export default (currentX, currentY) => {
   };
 
   const renderPlayer = () => {
-
     const player = {
       x: currentX,
       y: currentY
@@ -123,20 +119,36 @@ export default (currentX, currentY) => {
       const x = grid[i].x;
       const y = grid[i].y;
 
-      if (player.x === x && player.y === y && type === 'default')
+      if (player.x === x && player.y === y && type === "default")
         grid[i].player.currentPos = true;
 
-      if (moveMarkers.top.x === x && moveMarkers.top.y === y && type === 'default')
-        grid[i].player.moveMarker = 'top';
+      if (
+        moveMarkers.top.x === x &&
+        moveMarkers.top.y === y &&
+        type === "default"
+      )
+        grid[i].player.moveMarker = "top";
 
-      if (moveMarkers.left.x === x && moveMarkers.left.y === y && type === 'default')
-        grid[i].player.moveMarker = 'left';
+      if (
+        moveMarkers.left.x === x &&
+        moveMarkers.left.y === y &&
+        type === "default"
+      )
+        grid[i].player.moveMarker = "left";
 
-      if (moveMarkers.right.x === x && moveMarkers.right.y === y && type === 'default')
-        grid[i].player.moveMarker = 'right';
+      if (
+        moveMarkers.right.x === x &&
+        moveMarkers.right.y === y &&
+        type === "default"
+      )
+        grid[i].player.moveMarker = "right";
 
-      if (moveMarkers.bottom.x === x && moveMarkers.bottom.y === y && type === 'default')
-        grid[i].player.moveMarker = 'bottom';
+      if (
+        moveMarkers.bottom.x === x &&
+        moveMarkers.bottom.y === y &&
+        type === "default"
+      )
+        grid[i].player.moveMarker = "bottom";
     }
   };
 

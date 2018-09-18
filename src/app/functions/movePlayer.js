@@ -1,81 +1,106 @@
-export default (oldGrid, currentX, currentY, direction) => {
+export default (grid, currentX, currentY, direction) => {
+  let cancelMove = false;
 
-  let res = {};
-  res.grid = oldGrid;
-  res.x = currentX;
-  res.y = currentY;
+  const oldRes = {};
+  oldRes.grid = grid;
+  oldRes.x = currentX;
+  oldRes.y = currentY;
 
+  let newRes = {};
+  newRes.grid = grid;
+  newRes.x = currentX;
+  newRes.y = currentY;
+
+  // check if at edge of map
   if (
     (direction === "top" && currentY === 1) ||
     (direction === "left" && currentX === 1) ||
     (direction === "right" && currentX === 20) ||
     (direction === "bottom" && currentY === 15)
-  ) return res;
+  )
+    cancelMove = true;
 
-  if (direction === 'top') {
-    res.x = currentX;
-    res.y = currentY - 1;
+  if (direction === "top") {
+    newRes.x = currentX;
+    newRes.y = currentY - 1;
   }
 
-  if (direction === 'left') {
-    res.x = currentX - 1;
-    res.y = currentY;
+  if (direction === "left") {
+    newRes.x = currentX - 1;
+    newRes.y = currentY;
   }
 
-  if (direction === 'right') {
-    res.x = currentX + 1;
-    res.y = currentY;
+  if (direction === "right") {
+    newRes.x = currentX + 1;
+    newRes.y = currentY;
   }
 
-  if (direction === 'bottom') {
-    res.x = currentX;
-    res.y = currentY + 1;
+  if (direction === "bottom") {
+    newRes.x = currentX;
+    newRes.y = currentY + 1;
   }
 
-  const moveMarkers = {
-    top: {
-      x: res.x,
-      y: res.y - 1
-    },
-    left: {
-      x: res.x - 1,
-      y: res.y
-    },
-    right: {
-      x: res.x + 1,
-      y: res.y
-    },
-    bottom: {
-      x: res.x,
-      y: res.y + 1
+  const setMove = () => {
+    const moveMarkers = {
+      top: {
+        x: newRes.x,
+        y: newRes.y - 1
+      },
+      left: {
+        x: newRes.x - 1,
+        y: newRes.y
+      },
+      right: {
+        x: newRes.x + 1,
+        y: newRes.y
+      },
+      bottom: {
+        x: newRes.x,
+        y: newRes.y + 1
+      }
+    };
+
+    let i;
+    for (i = 0; i < newRes.grid.length; i++) {
+      const type = newRes.grid[i].type;
+      const x = newRes.grid[i].x;
+      const y = newRes.grid[i].y;
+
+      // reset
+      newRes.grid[i].player.moveMarker = false;
+      newRes.grid[i].player.currentPos = false;
+
+      if (newRes.x === x && newRes.y === y)
+        newRes.grid[i].player.currentPos = true;
+
+      if (moveMarkers.top.x === x && moveMarkers.top.y === y)
+        newRes.grid[i].player.moveMarker = "top";
+
+      if (moveMarkers.left.x === x && moveMarkers.left.y === y)
+        newRes.grid[i].player.moveMarker = "left";
+
+      if (moveMarkers.right.x === x && moveMarkers.right.y === y)
+        newRes.grid[i].player.moveMarker = "right";
+
+      if (moveMarkers.bottom.x === x && moveMarkers.bottom.y === y)
+        newRes.grid[i].player.moveMarker = "bottom";
     }
   };
 
-  let i;
-  for (i = 0; i < res.grid.length; i++) {
-    const type = res.grid[i].type;
-    const x = res.grid[i].x;
-    const y = res.grid[i].y;
+  // checks if next move will be on terrain
+  let ii;
+  for (ii = 0; ii < newRes.grid.length; ii++) {
+    const type = newRes.grid[ii].type;
+    const x = newRes.grid[ii].x;
+    const y = newRes.grid[ii].y;
 
-    // reset
-    res.grid[i].player.currentPos = false;
-    res.grid[i].player.moveMarker = false;
-
-    if (res.x === x && res.y === y && type === 'default')
-      res.grid[i].player.currentPos = true;
-
-    if (moveMarkers.top.x === x && moveMarkers.top.y === y && res.y > 0 && type === 'default')
-      res.grid[i].player.moveMarker = 'top';
-
-    if (moveMarkers.left.x === x && moveMarkers.left.y === y && type === 'default')
-      res.grid[i].player.moveMarker = 'left';
-
-    if (moveMarkers.right.x === x && moveMarkers.right.y === y && type === 'default')
-      res.grid[i].player.moveMarker = 'right';
-
-    if (moveMarkers.bottom.x === x && moveMarkers.bottom.y === y && type === 'default')
-      res.grid[i].player.moveMarker = 'bottom';
+    if (newRes.x === x && newRes.y === y && type === "terrain") {
+      cancelMove = true;
+      break;
+    }
   }
 
-  return res;
-}
+  if (cancelMove) return oldRes;
+  setMove();
+  return newRes;
+};

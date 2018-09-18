@@ -44,7 +44,7 @@
 }
 
 .grid__block--forest {
-  background: lime;
+  background: green;
 }
 
 .grid__block--mountains {
@@ -56,11 +56,11 @@
 }
 
 .grid__block--moverMarker {
-  outline: 3px solid green;
+  outline: 3px solid purple;
 }
 
 .grid__block--player {
-  background: green;
+  background: purple;
 }
 
 .grid__block--enemy {

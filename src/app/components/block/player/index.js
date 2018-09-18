@@ -16,16 +16,16 @@ class Player extends Component {
 
   handleKeyArrow = event => {
     if (event.keyCode === 38) {
-      this.props.movePlayer('top');
+      this.props.movePlayer("top");
     }
     if (event.keyCode === 37) {
-      this.props.movePlayer('left');
+      this.props.movePlayer("left");
     }
     if (event.keyCode === 39) {
-      this.props.movePlayer('right');
+      this.props.movePlayer("right");
     }
     if (event.keyCode === 40) {
-      this.props.movePlayer('bottom');
+      this.props.movePlayer("bottom");
     }
   };
 
